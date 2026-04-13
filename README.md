@@ -8,6 +8,7 @@
 de bibliotecas filantrópicas e instituições espíritas do Brasil.
 
 [![Licença: AGPL-3.0](https://img.shields.io/badge/Licença-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![GitHub](https://img.shields.io/badge/GitHub-LuizLourenco%2FScriba-black?logo=github)](https://github.com/LuizLourenco/Scriba)
 [![Java](https://img.shields.io/badge/Java-25-orange.svg)](https://adoptium.net)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.5-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![SQLite](https://img.shields.io/badge/Banco-SQLite-lightgrey.svg)](https://www.sqlite.org)
@@ -70,7 +71,7 @@ sdk install java 25-tem
 
 ```bash
 # 1. Baixar a última versão
-# Acesse: https://github.com/lourenco-dev/scriba/releases
+# Acesse: https://github.com/LuizLourenco/Scriba/releases
 # Baixe o arquivo: scriba-1.0.0.jar
 
 # 2. Iniciar o sistema
@@ -103,26 +104,68 @@ O sistema cria o banco de dados automaticamente em `~/scriba/biblioteca.db` na p
 Todas as configurações ficam no arquivo `application.yml`, criado automaticamente ao lado do JAR:
 
 ```yaml
+# application.yml — sem nenhuma credencial aqui
+# Todos os valores sensíveis vêm do arquivo .env (nunca versionado)
+
 scriba:
   biblioteca:
-    nome: "Biblioteca Espírita Allan Kardec"
+    nome: ${SCRIBA_NOME:Biblioteca Espírita}
     prazo-emprestimo-dias: 14
     max-livros-por-membro: 3
     multa-por-dia: 0.50
 
 spring:
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: seu-email@gmail.com
-    password: sua-app-password   # Veja: Como configurar e-mail
+    enabled: ${MAIL_ENABLED:false}
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USER}
+    password: ${MAIL_APP_PASSWORD}
 ```
+
+### Variáveis de Ambiente
+
+O Scriba nunca armazena credenciais em arquivos versionados. Toda configuração sensível usa variáveis de ambiente carregadas de um arquivo `.env` local:
+
+```bash
+# 1. Criar o .env a partir do exemplo
+cp .env.example .env
+
+# 2. Preencher os valores (nunca commitar este arquivo)
+nano .env   # ou qualquer editor
+
+# 3. Iniciar — as variáveis são carregadas automaticamente
+./start.sh
+```
+
+O arquivo `.env.example` documenta todas as variáveis disponíveis com descrição.  
+O arquivo `.env` já está no `.gitignore` — **nunca será enviado ao repositório**.
+
+| Arquivo | Versionado | Conteúdo |
+|---|---|---|
+| `.env.example` | ✅ Sim | Chaves com valores vazios — template público |
+| `.env` | ❌ Não | Valores reais — apenas na máquina local |
+| `application.yml` | ✅ Sim | Referências `${VAR}` — sem nenhuma credencial |
+
+---
 
 ### Como configurar e-mail (Gmail)
 
 1. Acesse [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
 2. Crie uma senha de app para "Scriba"
-3. Cole a senha gerada no campo `password` do `application.yml`
+3. Copie o arquivo de exemplo e preencha as variáveis:
+
+```bash
+cp .env.example .env
+# Edite o .env com seu editor favorito
+```
+
+```bash
+# .env — este arquivo NÃO entra no Git
+MAIL_ENABLED=true
+MAIL_USER=seu-email@gmail.com
+MAIL_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx
+```
 
 > As notificações por e-mail são **opcionais**. O sistema funciona 100% sem elas.
 
@@ -185,7 +228,11 @@ sdk install java 25-tem
 sdk install maven
 
 # Clonar o repositório
-git clone https://github.com/lourenco-dev/scriba.git
+# HTTPS
+git clone https://github.com/LuizLourenco/Scriba.git
+
+# SSH
+git clone git@github.com:LuizLourenco/Scriba.git
 cd scriba
 ```
 
@@ -246,8 +293,8 @@ O Scriba é um projeto comunitário. Contribuições são muito bem-vindas!
 
 ### Como contribuir
 
-1. Leia o [Guia de Contribuição](CONTRIBUTING.md)
-2. Veja as [issues abertas](https://github.com/lourenco-dev/scriba/issues) — especialmente as marcadas com `ideal-para-contribuição`
+1. Leia o [Guia de Contribuição](https://github.com/LuizLourenco/Scriba/blob/main/CONTRIBUTING.md)
+2. Veja as [issues abertas](https://github.com/LuizLourenco/Scriba/issues) — especialmente as marcadas com `ideal-para-contribuição`
 3. Faça um fork, crie uma branch e abra um Pull Request
 
 ### Tipos de contribuição que precisamos
@@ -271,7 +318,7 @@ O Scriba é um projeto comunitário. Contribuições são muito bem-vindas!
 
 ## 📋 Roadmap
 
-Acompanhe o planejamento completo no [GitHub Projects](https://github.com/lourenco-dev/scriba/projects).
+Acompanhe o planejamento completo no [GitHub Projects](https://github.com/LuizLourenco/Scriba/projects).
 
 | Versão | Status | Previsão |
 |---|---|---|
@@ -283,9 +330,9 @@ Acompanhe o planejamento completo no [GitHub Projects](https://github.com/louren
 
 ## 🙋 Suporte
 
-- **Dúvidas de uso:** abra uma [Discussion](https://github.com/lourenco-dev/scriba/discussions)
-- **Bugs:** abra uma [Issue](https://github.com/lourenco-dev/scriba/issues)
-- **Contato:** [contato@lourenco.dev.br](mailto:contato@lourenco.dev.br)
+- **Dúvidas de uso:** abra uma [Discussion](https://github.com/LuizLourenco/Scriba/discussions)
+- **Bugs:** abra uma [Issue](https://github.com/LuizLourenco/Scriba/issues)
+- **Contato:** [luiz.lourenco@outlook.com.br](mailto:luiz.lourenco@outlook.com.br)
 
 ---
 
@@ -301,12 +348,14 @@ Isso significa que:
 
 Veja o arquivo [LICENSE](LICENSE) para o texto completo.
 
+Copyright © 2025 Luiz Lourenco — [luiz.lourenco@outlook.com.br](mailto:luiz.lourenco@outlook.com.br)
+
 ---
 
 <div align="center">
 
 Feito com 💙 para o Movimento Espírita brasileiro
 
-**[lourenco.dev.br](https://lourenco.dev.br)**
+**[github.com/LuizLourenco/Scriba](https://github.com/LuizLourenco/Scriba)**
 
 </div>
