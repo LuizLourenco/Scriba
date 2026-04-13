@@ -1,0 +1,34 @@
+<!-- templates/acervo/lista.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: page}">
+<body>
+<th:block th:fragment="content">
+
+    <div class="p-6">
+        <h1 class="text-2xl font-bold text-navy-800 mb-4">Acervo</h1>
+
+        <!-- Campo de busca — HTMX dispara GET /acervo/buscar?q=... -->
+        <!-- Atualiza apenas o #tabela-acervo, sem recarregar a página -->
+        <input type="text"
+               name="q"
+               th:value="${query}"
+               placeholder="Buscar por título, autor ou ISBN..."
+               hx-get="/acervo/buscar"
+               hx-trigger="keyup changed delay:300ms"
+               hx-target="#tabela-acervo"
+               hx-indicator="#spinner"
+               class="w-full border rounded px-3 py-2 mb-4">
+
+        <span id="spinner" class="htmx-indicator text-sm text-gray-500">
+            Buscando...
+        </span>
+
+        <!-- Este div é substituído pelo fragment /acervo/buscar -->
+        <div id="tabela-acervo"
+             th:replace="~{acervo/fragments/resultados :: tabela}">
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>
