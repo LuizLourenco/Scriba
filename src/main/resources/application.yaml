@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: scriba
+  aop:
+    proxy-target-class: false
+  mvc:
+    problemdetails:
+      enabled: true
+  thymeleaf:
+    cache: false
+
+scriba:
+  tenant:
+    strict-mode: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info

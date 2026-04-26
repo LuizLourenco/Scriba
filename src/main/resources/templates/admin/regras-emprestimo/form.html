@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Regras de empréstimo</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <form method="post" th:action="@{/admin/regras-emprestimo}" th:object="${regraEmprestimoForm}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <label for="prazoPadraoDias">Prazo padrão em dias</label>
+        <input id="prazoPadraoDias" type="number" min="1" max="365" th:field="*{prazoPadraoDias}">
+        <p th:if="${#fields.hasErrors('prazoPadraoDias')}" th:errors="*{prazoPadraoDias}"></p>
+
+        <label for="limiteEmprestimos">Limite de empréstimos</label>
+        <input id="limiteEmprestimos" type="number" min="1" max="100" th:field="*{limiteEmprestimos}">
+        <p th:if="${#fields.hasErrors('limiteEmprestimos')}" th:errors="*{limiteEmprestimos}"></p>
+
+        <label for="valorMulta">Valor da multa</label>
+        <input id="valorMulta" type="number" min="0" step="0.01" th:field="*{valorMulta}">
+        <p th:if="${#fields.hasErrors('valorMulta')}" th:errors="*{valorMulta}"></p>
+
+        <button type="submit">Salvar</button>
+    </form>
+</main>
+</body>
+</html>

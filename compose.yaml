@@ -1,0 +1,23 @@
+services:
+  db-dev:
+    image: mariadb:11.4
+    container_name: scriba-db-dev
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: scriba_dev
+      MARIADB_USER: scriba_user
+      MARIADB_PASSWORD: scriba_dev_pass
+      MARIADB_ROOT_PASSWORD: scriba_root_dev_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_dev_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -uroot -p$$MARIADB_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  mariadb_dev_data:

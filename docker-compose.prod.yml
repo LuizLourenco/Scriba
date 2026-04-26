@@ -1,0 +1,46 @@
+services:
+  db-prod:
+    image: mariadb:11.4
+    container_name: scriba-db-prod
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - mariadb_prod_data:/var/lib/mysql
+      - ./docker/mariadb/my.prod.cnf:/etc/mysql/conf.d/my.prod.cnf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -uroot -p$$MARIADB_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - scriba-internal
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scriba-app
+    restart: unless-stopped
+    depends_on:
+      db-prod:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: db-prod
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - scriba-internal
+
+networks:
+  scriba-internal:
+
+volumes:
+  mariadb_prod_data:

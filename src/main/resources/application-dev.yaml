@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:scriba_dev}
+    username: ${DB_USERNAME:scriba_user}
+    password: ${DB_PASSWORD:scriba_dev_pass}
+    driver-class-name: org.mariadb.jdbc.Driver
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+scriba:
+  tenant:
+    strict-mode: true

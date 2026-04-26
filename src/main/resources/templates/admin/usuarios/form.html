@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1 th:text="${usuarioId == null ? 'Novo usuário' : 'Editar usuário'}"></h1>
+    <form method="post" th:action="${usuarioId == null ? '/admin/usuarios' : '/admin/usuarios/' + usuarioId}" th:object="${usuarioForm}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+        </div>
+        <label for="nome">Nome</label>
+        <input id="nome" th:field="*{nome}">
+        <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+
+        <label for="email">E-mail</label>
+        <input id="email" type="email" th:field="*{email}">
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" th:field="*{senha}">
+        <p th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></p>
+
+        <label for="role">Perfil</label>
+        <select id="role" th:field="*{role}">
+            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+        </select>
+
+        <label for="bibliotecaId">Biblioteca</label>
+        <select id="bibliotecaId" th:field="*{bibliotecaId}">
+            <option value="">Sem biblioteca</option>
+            <option th:each="biblioteca : ${bibliotecas}" th:value="${biblioteca.id}" th:text="${biblioteca.nome}"></option>
+        </select>
+
+        <label>
+            <input type="checkbox" th:field="*{ativo}">
+            Ativo
+        </label>
+
+        <button type="submit">Salvar</button>
+        <a th:href="@{/admin/usuarios}">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>
