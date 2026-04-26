@@ -32,7 +32,8 @@ class RbacIntegrationTest extends AbstractCoreIntegrationTest {
 
     @Test
     void bibliotecarioAcessaCatalogoMasNaoAdmin() throws Exception {
-        mvc.perform(get("/catalogo/autores").with(user("bib").roles("BIBLIOTECARIO")))
+        mvc.perform(get("/catalogo/autores")
+                .with(user(userDetailsService.loadUserByUsername("bibliotecario@scriba.dev"))))
             .andExpect(status().isOk());
 
         mvc.perform(get("/admin/usuarios")

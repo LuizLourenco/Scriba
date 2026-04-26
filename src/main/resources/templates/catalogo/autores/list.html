@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Autores</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <form method="get" th:action="@{/catalogo/autores}">
+        <input name="busca" th:value="${busca}" placeholder="Buscar por nome">
+        <button type="submit">Buscar</button>
+    </form>
+    <p><a th:href="@{/catalogo/autores/novo}">Novo autor</a></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Nacionalidade</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="autor : ${autores}">
+            <td th:text="${autor.nome}"></td>
+            <td th:text="${autor.nacionalidade}"></td>
+            <td th:text="${autor.ativo ? 'Ativo' : 'Inativo'}"></td>
+            <td><a th:href="@{/catalogo/autores/{id}/editar(id=${autor.id})}">Editar</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

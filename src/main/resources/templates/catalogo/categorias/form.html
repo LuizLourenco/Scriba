@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1 th:text="${categoriaId == null ? 'Nova categoria' : 'Editar categoria'}"></h1>
+    <form method="post" th:action="${categoriaId == null ? '/catalogo/categorias' : '/catalogo/categorias/' + categoriaId}" th:object="${categoriaForm}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+        </div>
+        <label for="nome">Nome</label>
+        <input id="nome" th:field="*{nome}">
+
+        <label for="descricao">Descrição</label>
+        <input id="descricao" th:field="*{descricao}">
+
+        <label for="paiId">Categoria pai</label>
+        <select id="paiId" th:field="*{paiId}">
+            <option value="">Sem pai</option>
+            <option th:each="categoria : ${categoriasPai}"
+                    th:if="${categoria.pai == null && (categoriaId == null || categoria.id != categoriaId)}"
+                    th:value="${categoria.id}"
+                    th:text="${categoria.nome}"></option>
+        </select>
+
+        <label>
+            <input type="checkbox" th:field="*{ativo}">
+            Ativa
+        </label>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/catalogo/categorias}">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>

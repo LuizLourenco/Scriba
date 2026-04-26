@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Classificações</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <form method="get" th:action="@{/catalogo/classificacoes}">
+        <input name="busca" th:value="${busca}" placeholder="Buscar por descrição">
+        <button type="submit">Buscar</button>
+    </form>
+    <p><a th:href="@{/catalogo/classificacoes/nova}">Nova classificação</a></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Padrão</th>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="classificacao : ${classificacoes}">
+            <td th:text="${classificacao.padrao}"></td>
+            <td th:text="${classificacao.codigo}"></td>
+            <td th:text="${classificacao.descricao}"></td>
+            <td th:text="${classificacao.ativo ? 'Ativa' : 'Inativa'}"></td>
+            <td><a th:href="@{/catalogo/classificacoes/{id}/editar(id=${classificacao.id})}">Editar</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

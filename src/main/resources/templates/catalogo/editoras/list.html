@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Editoras</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <form method="get" th:action="@{/catalogo/editoras}">
+        <input name="busca" th:value="${busca}" placeholder="Buscar por nome">
+        <button type="submit">Buscar</button>
+    </form>
+    <p><a th:href="@{/catalogo/editoras/nova}">Nova editora</a></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Cidade</th>
+            <th>País</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="editora : ${editoras}">
+            <td th:text="${editora.nome}"></td>
+            <td th:text="${editora.cidade}"></td>
+            <td th:text="${editora.pais}"></td>
+            <td th:text="${editora.ativo ? 'Ativa' : 'Inativa'}"></td>
+            <td><a th:href="@{/catalogo/editoras/{id}/editar(id=${editora.id})}">Editar</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
