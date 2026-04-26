@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Portal do leitor</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p th:text="${leitor.nome}"></p>
+    <p><a th:href="@{/portal/acervo}">Consultar acervo</a></p>
+
+    <section>
+        <h2>Emprestimos</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Status</th>
+                <th>Prevista</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="emprestimo : ${emprestimos}">
+                <td th:text="${emprestimo.acervoItem.titulo}"></td>
+                <td th:text="${emprestimo.status}"></td>
+                <td th:text="${emprestimo.dataPrevistaDevolucao}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Reservas</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Status</th>
+                <th>Fila</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reserva : ${reservas}">
+                <td th:text="${reserva.acervoItem.titulo}"></td>
+                <td th:text="${reserva.status}"></td>
+                <td th:text="${reserva.posicaoFila}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Multas</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Valor</th>
+                <th>Dias</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="multa : ${multas}">
+                <td th:text="${multa.valor}"></td>
+                <td th:text="${multa.diasAtraso}"></td>
+                <td th:text="${multa.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

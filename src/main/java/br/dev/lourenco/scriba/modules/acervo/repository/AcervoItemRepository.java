@@ -19,6 +19,16 @@ public interface AcervoItemRepository extends JpaRepository<AcervoItem, UUID> {
     @EntityGraph(attributePaths = "biblioteca")
     List<AcervoItem> findAllByInstituicaoIdAndTituloContainingIgnoreCaseOrderByTituloAsc(UUID instituicaoId, String titulo);
 
+    @EntityGraph(attributePaths = "biblioteca")
+    List<AcervoItem> findAllByInstituicaoIdAndStatusInOrderByTituloAsc(UUID instituicaoId, List<StatusAcervo> statuses);
+
+    @EntityGraph(attributePaths = "biblioteca")
+    List<AcervoItem> findAllByInstituicaoIdAndStatusInAndTituloContainingIgnoreCaseOrderByTituloAsc(
+        UUID instituicaoId,
+        List<StatusAcervo> statuses,
+        String titulo
+    );
+
     Optional<AcervoItem> findByIdAndInstituicaoId(UUID id, UUID instituicaoId);
 
     boolean existsByTomboIgnoreCaseAndInstituicaoId(String tombo, UUID instituicaoId);

@@ -9,6 +9,10 @@ import br.dev.lourenco.scriba.modules.administracao.domain.Usuario;
 import br.dev.lourenco.scriba.modules.administracao.repository.BibliotecaRepository;
 import br.dev.lourenco.scriba.modules.administracao.repository.InstituicaoRepository;
 import br.dev.lourenco.scriba.modules.administracao.repository.UsuarioRepository;
+import br.dev.lourenco.scriba.modules.pessoas.domain.Leitor;
+import br.dev.lourenco.scriba.modules.pessoas.domain.TipoLeitor;
+import br.dev.lourenco.scriba.modules.pessoas.repository.LeitorRepository;
+import br.dev.lourenco.scriba.modules.pessoas.repository.TipoLeitorRepository;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +26,8 @@ public class CoreDataInitializer {
         InstituicaoRepository instituicaoRepository,
         BibliotecaRepository bibliotecaRepository,
         UsuarioRepository usuarioRepository,
+        TipoLeitorRepository tipoLeitorRepository,
+        LeitorRepository leitorRepository,
         PasswordEncoder passwordEncoder
     ) {
         return args -> {
@@ -45,6 +51,19 @@ public class CoreDataInitializer {
                 novoUsuario("Bibliotecária", "bibliotecario@scriba.dev", Role.BIBLIOTECARIO, biblioteca, passwordEncoder, instituicao.getId()),
                 novoUsuario("Leitora", "leitor@scriba.dev", Role.LEITOR, biblioteca, passwordEncoder, instituicao.getId())
             ));
+
+            TipoLeitor tipoLeitor = new TipoLeitor();
+            tipoLeitor.setInstituicaoId(instituicao.getId());
+            tipoLeitor.setNome("Leitor padrao");
+            tipoLeitorRepository.save(tipoLeitor);
+
+            Leitor leitor = new Leitor();
+            leitor.setInstituicaoId(instituicao.getId());
+            leitor.setTipoLeitor(tipoLeitor);
+            leitor.setNome("Leitora");
+            leitor.setCpf("00000000000");
+            leitor.setEmail("leitor@scriba.dev");
+            leitorRepository.save(leitor);
         };
     }
 

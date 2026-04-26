@@ -15,5 +15,8 @@ public interface MultaRepository extends JpaRepository<Multa, UUID> {
     @EntityGraph(attributePaths = {"emprestimo", "leitor"})
     List<Multa> findAllByInstituicaoIdOrderByDataGeracaoDesc(UUID instituicaoId);
 
+    @EntityGraph(attributePaths = {"emprestimo", "leitor"})
+    List<Multa> findAllByLeitorIdAndInstituicaoIdOrderByDataGeracaoDesc(UUID leitorId, UUID instituicaoId);
+
     boolean existsByLeitorIdAndInstituicaoIdAndStatus(UUID leitorId, UUID instituicaoId, StatusMulta status);
 }

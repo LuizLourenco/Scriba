@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Acervo</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p th:if="${erro}" th:text="${erro}"></p>
+
+    <form method="get" th:action="@{/portal/acervo}">
+        <label for="busca">Busca</label>
+        <input id="busca" name="busca" th:value="${busca}">
+        <button type="submit">Pesquisar</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Status</th>
+            <th>Biblioteca</th>
+            <th>Acao</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${itens}">
+            <td th:text="${item.titulo}"></td>
+            <td th:text="${item.status}"></td>
+            <td th:text="${item.biblioteca != null ? item.biblioteca.nome : '-'}"></td>
+            <td>
+                <form method="post" th:action="@{/portal/reservas}" th:object="${reservaForm}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <input type="hidden" name="acervoItemId" th:value="${item.id}">
+                    <button type="submit">Reservar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

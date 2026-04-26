@@ -17,6 +17,8 @@ public interface LeitorRepository extends JpaRepository<Leitor, UUID> {
 
     Optional<Leitor> findByIdAndInstituicaoId(UUID id, UUID instituicaoId);
 
+    Optional<Leitor> findByEmailIgnoreCaseAndInstituicaoId(String email, UUID instituicaoId);
+
     boolean existsByCpfAndInstituicaoId(String cpf, UUID instituicaoId);
 
     boolean existsByCpfAndInstituicaoIdAndIdNot(String cpf, UUID instituicaoId, UUID id);

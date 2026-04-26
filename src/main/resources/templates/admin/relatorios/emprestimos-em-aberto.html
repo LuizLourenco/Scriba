@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Emprestimos em aberto</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+
+    <form method="get" th:action="@{/admin/relatorios/emprestimos-em-aberto}">
+        <label for="de">De</label>
+        <input id="de" type="date" name="de" th:value="${relatorio.de}">
+        <label for="ate">Ate</label>
+        <input id="ate" type="date" name="ate" th:value="${relatorio.ate}">
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <form method="post" th:action="@{/admin/jobs/notificar-atrasos}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <button type="submit">Notificar atrasos</button>
+    </form>
+
+    <p>Total: <span th:text="${relatorio.total}"></span></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th>Leitor</th>
+            <th>Emprestimo</th>
+            <th>Prevista</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="emprestimo : ${relatorio.emprestimos}">
+            <td th:text="${emprestimo.acervoItem.titulo}"></td>
+            <td th:text="${emprestimo.leitor.nome}"></td>
+            <td th:text="${emprestimo.dataEmprestimo}"></td>
+            <td th:text="${emprestimo.dataPrevistaDevolucao}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

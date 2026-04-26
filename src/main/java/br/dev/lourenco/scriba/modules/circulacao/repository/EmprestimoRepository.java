@@ -3,6 +3,7 @@ package br.dev.lourenco.scriba.modules.circulacao.repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.time.LocalDate;
 
 import br.dev.lourenco.scriba.core.tenant.TenantScopedRepository;
 import br.dev.lourenco.scriba.modules.circulacao.domain.Emprestimo;
@@ -17,6 +18,24 @@ public interface EmprestimoRepository extends JpaRepository<Emprestimo, UUID> {
     List<Emprestimo> findAllByInstituicaoIdOrderByDataEmprestimoDesc(UUID instituicaoId);
 
     @EntityGraph(attributePaths = {"acervoItem", "leitor"})
+    List<Emprestimo> findAllByLeitorIdAndInstituicaoIdOrderByDataEmprestimoDesc(UUID leitorId, UUID instituicaoId);
+
+    @EntityGraph(attributePaths = {"acervoItem", "leitor"})
+    List<Emprestimo> findAllByInstituicaoIdAndStatusAndDataEmprestimoBetweenOrderByDataEmprestimoDesc(
+        UUID instituicaoId,
+        StatusEmprestimo status,
+        LocalDate de,
+        LocalDate ate
+    );
+
+    @EntityGraph(attributePaths = {"acervoItem", "leitor"})
+    List<Emprestimo> findAllByInstituicaoIdAndStatusAndDataPrevistaDevolucaoBeforeOrderByDataPrevistaDevolucaoAsc(
+        UUID instituicaoId,
+        StatusEmprestimo status,
+        LocalDate dataReferencia
+    );
+
+    @EntityGraph(attributePaths = {"acervoItem", "leitor"})
     Optional<Emprestimo> findByIdAndInstituicaoId(UUID id, UUID instituicaoId);
 
     Optional<Emprestimo> findByAcervoItemIdAndInstituicaoIdAndStatus(
@@ -26,4 +45,11 @@ public interface EmprestimoRepository extends JpaRepository<Emprestimo, UUID> {
     );
 
     long countByLeitorIdAndInstituicaoIdAndStatus(UUID leitorId, UUID instituicaoId, StatusEmprestimo status);
+
+    long countByInstituicaoIdAndStatusAndDataEmprestimoBetween(
+        UUID instituicaoId,
+        StatusEmprestimo status,
+        LocalDate de,
+        LocalDate ate
+    );
 }

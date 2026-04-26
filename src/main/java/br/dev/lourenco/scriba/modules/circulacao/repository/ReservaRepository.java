@@ -16,6 +16,9 @@ public interface ReservaRepository extends JpaRepository<Reserva, UUID> {
     @EntityGraph(attributePaths = {"acervoItem", "leitor"})
     List<Reserva> findAllByInstituicaoIdOrderByDataReservaDesc(UUID instituicaoId);
 
+    @EntityGraph(attributePaths = {"acervoItem", "leitor"})
+    List<Reserva> findAllByLeitorIdAndInstituicaoIdOrderByDataReservaDesc(UUID leitorId, UUID instituicaoId);
+
     Optional<Reserva> findByAcervoItemIdAndLeitorIdAndInstituicaoIdAndStatus(
         UUID acervoItemId,
         UUID leitorId,
