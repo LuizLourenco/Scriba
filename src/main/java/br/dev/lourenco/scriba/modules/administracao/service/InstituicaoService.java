@@ -32,6 +32,12 @@ public class InstituicaoService {
         form.setPrazoPadraoDias(regra.getPrazoPadraoDias());
         form.setLimiteEmprestimos(regra.getLimiteEmprestimos());
         form.setValorMulta(regra.getValorMulta());
+        form.setLimiteReservas(regra.getLimiteReservas());
+        form.setDiasExpiracaoReserva(regra.getDiasExpiracaoReserva());
+        form.setMaximoRenovacoes(regra.getMaximoRenovacoes());
+        form.setBloqueioComMulta(regra.isBloqueioComMulta());
+        form.setTipoMulta(regra.getTipoMulta());
+        form.setTetoMaximoMulta(regra.getTetoMaximoMulta());
         return form;
     }
 
@@ -41,5 +47,11 @@ public class InstituicaoService {
         regra.setPrazoPadraoDias(form.getPrazoPadraoDias());
         regra.setLimiteEmprestimos(form.getLimiteEmprestimos());
         regra.setValorMulta(form.getValorMulta());
+        regra.setLimiteReservas(form.getLimiteReservas());
+        regra.setDiasExpiracaoReserva(form.getDiasExpiracaoReserva());
+        regra.setMaximoRenovacoes(form.getMaximoRenovacoes());
+        regra.setBloqueioComMulta(form.isBloqueioComMulta());
+        regra.setTipoMulta(form.getTipoMulta());
+        regra.setTetoMaximoMulta(form.getTetoMaximoMulta());
     }
 }

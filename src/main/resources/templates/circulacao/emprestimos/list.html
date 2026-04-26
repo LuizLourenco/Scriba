@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Circulação</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+
+    <section>
+        <h2>Novo empréstimo</h2>
+        <form method="post" th:action="@{/circulacao/emprestimos}" th:object="${emprestimoForm}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label for="emprestimoItem">Item</label>
+            <select id="emprestimoItem" th:field="*{acervoItemId}">
+                <option value="">Selecione</option>
+                <option th:each="item : ${itens}" th:value="${item.id}" th:text="${item.titulo + ' - ' + item.status}"></option>
+            </select>
+            <label for="emprestimoLeitor">Leitor</label>
+            <select id="emprestimoLeitor" th:field="*{leitorId}">
+                <option value="">Selecione</option>
+                <option th:each="leitor : ${leitores}" th:value="${leitor.id}" th:text="${leitor.nome}"></option>
+            </select>
+            <button type="submit">Emprestar</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Nova reserva</h2>
+        <form method="post" th:action="@{/circulacao/reservas}" th:object="${reservaForm}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label for="reservaItem">Item</label>
+            <select id="reservaItem" th:field="*{acervoItemId}">
+                <option value="">Selecione</option>
+                <option th:each="item : ${itens}" th:value="${item.id}" th:text="${item.titulo + ' - ' + item.status}"></option>
+            </select>
+            <label for="reservaLeitor">Leitor</label>
+            <select id="reservaLeitor" th:field="*{leitorId}">
+                <option value="">Selecione</option>
+                <option th:each="leitor : ${leitores}" th:value="${leitor.id}" th:text="${leitor.nome}"></option>
+            </select>
+            <button type="submit">Reservar</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Empréstimos</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Leitor</th>
+                <th>Status</th>
+                <th>Devolução prevista</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="emprestimo : ${emprestimos}">
+                <td th:text="${emprestimo.acervoItem.titulo}"></td>
+                <td th:text="${emprestimo.leitor.nome}"></td>
+                <td th:text="${emprestimo.status}"></td>
+                <td th:text="${emprestimo.dataPrevistaDevolucao}"></td>
+                <td>
+                    <form th:if="${emprestimo.status.name() == 'ATIVO'}" method="post" th:action="@{/circulacao/emprestimos/{id}/renovar(id=${emprestimo.id})}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button type="submit">Renovar</button>
+                    </form>
+                    <form th:if="${emprestimo.status.name() == 'ATIVO'}" method="post" th:action="@{/circulacao/emprestimos/{id}/devolver(id=${emprestimo.id})}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button type="submit">Devolver</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Reservas</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Leitor</th>
+                <th>Status</th>
+                <th>Fila</th>
+                <th>Expiração</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reserva : ${reservas}">
+                <td th:text="${reserva.acervoItem.titulo}"></td>
+                <td th:text="${reserva.leitor.nome}"></td>
+                <td th:text="${reserva.status}"></td>
+                <td th:text="${reserva.posicaoFila}"></td>
+                <td th:text="${reserva.dataExpiracao}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Multas</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Leitor</th>
+                <th>Valor</th>
+                <th>Dias</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="multa : ${multas}">
+                <td th:text="${multa.leitor.nome}"></td>
+                <td th:text="${multa.valor}"></td>
+                <td th:text="${multa.diasAtraso}"></td>
+                <td th:text="${multa.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

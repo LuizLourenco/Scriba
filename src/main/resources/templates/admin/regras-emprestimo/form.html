@@ -18,6 +18,32 @@
         <input id="valorMulta" type="number" min="0" step="0.01" th:field="*{valorMulta}">
         <p th:if="${#fields.hasErrors('valorMulta')}" th:errors="*{valorMulta}"></p>
 
+        <label for="limiteReservas">Limite de reservas</label>
+        <input id="limiteReservas" type="number" min="0" max="100" th:field="*{limiteReservas}">
+        <p th:if="${#fields.hasErrors('limiteReservas')}" th:errors="*{limiteReservas}"></p>
+
+        <label for="diasExpiracaoReserva">Expiração da reserva em dias</label>
+        <input id="diasExpiracaoReserva" type="number" min="1" max="365" th:field="*{diasExpiracaoReserva}">
+        <p th:if="${#fields.hasErrors('diasExpiracaoReserva')}" th:errors="*{diasExpiracaoReserva}"></p>
+
+        <label for="maximoRenovacoes">Máximo de renovações</label>
+        <input id="maximoRenovacoes" type="number" min="0" max="100" th:field="*{maximoRenovacoes}">
+        <p th:if="${#fields.hasErrors('maximoRenovacoes')}" th:errors="*{maximoRenovacoes}"></p>
+
+        <label for="tipoMulta">Tipo de multa</label>
+        <select id="tipoMulta" th:field="*{tipoMulta}">
+            <option value="FIXO_DIARIO">Fixo diário</option>
+            <option value="PERCENTUAL">Percentual</option>
+        </select>
+        <p th:if="${#fields.hasErrors('tipoMulta')}" th:errors="*{tipoMulta}"></p>
+
+        <label for="tetoMaximoMulta">Teto máximo da multa</label>
+        <input id="tetoMaximoMulta" type="number" min="0" step="0.01" th:field="*{tetoMaximoMulta}">
+        <p th:if="${#fields.hasErrors('tetoMaximoMulta')}" th:errors="*{tetoMaximoMulta}"></p>
+
+        <label for="bloqueioComMulta">Bloquear empréstimo com multa pendente</label>
+        <input id="bloqueioComMulta" type="checkbox" th:field="*{bloqueioComMulta}">
+
         <button type="submit">Salvar</button>
     </form>
 </main>

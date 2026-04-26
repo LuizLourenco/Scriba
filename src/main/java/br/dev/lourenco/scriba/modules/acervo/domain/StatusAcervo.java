@@ -25,7 +25,7 @@ public enum StatusAcervo {
         return switch (this) {
             case DISPONIVEL -> Set.of(RESERVADO, EMPRESTADO, EM_MANUTENCAO, USO_INTERNO, REMANEJADO, DESCARTADO);
             case RESERVADO -> Set.of(EMPRESTADO, DISPONIVEL);
-            case EMPRESTADO -> Set.of(DISPONIVEL, EXTRAVIADO);
+            case EMPRESTADO -> Set.of(DISPONIVEL, RESERVADO, EXTRAVIADO);
             case EM_MANUTENCAO -> Set.of(DISPONIVEL, REMANEJADO, DESCARTADO);
             case USO_INTERNO -> Set.of(DISPONIVEL, EM_MANUTENCAO);
             case EXTRAVIADO -> Set.of(DISPONIVEL, DESCARTADO);
