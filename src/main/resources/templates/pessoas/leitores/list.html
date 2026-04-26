@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Leitores</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p><a th:href="@{/pessoas/leitores/novo}">Novo leitor</a></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>E-mail</th>
+            <th>Tipo</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="leitor : ${leitores}">
+            <td th:text="${leitor.nome}"></td>
+            <td th:text="${leitor.cpf}"></td>
+            <td th:text="${leitor.email}"></td>
+            <td th:text="${leitor.tipoLeitor.nome}"></td>
+            <td th:text="${leitor.ativo ? 'Ativo' : 'Inativo'}"></td>
+            <td><a th:href="@{/pessoas/leitores/{id}/editar(id=${leitor.id})}">Editar</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

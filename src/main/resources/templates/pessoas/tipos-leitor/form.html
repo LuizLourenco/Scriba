@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1 th:text="${tipoLeitorId == null ? 'Novo tipo de leitor' : 'Editar tipo de leitor'}"></h1>
+    <form method="post" th:action="${tipoLeitorId == null ? '/pessoas/tipos-leitor' : '/pessoas/tipos-leitor/' + tipoLeitorId}" th:object="${tipoLeitorForm}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+        </div>
+        <label for="nome">Nome</label>
+        <input id="nome" th:field="*{nome}">
+        <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+
+        <label for="prazoPadraoDias">Prazo padrão em dias</label>
+        <input id="prazoPadraoDias" type="number" min="1" max="365" th:field="*{prazoPadraoDias}">
+
+        <label for="limiteEmprestimos">Limite de empréstimos</label>
+        <input id="limiteEmprestimos" type="number" min="1" max="100" th:field="*{limiteEmprestimos}">
+
+        <label>
+            <input type="checkbox" th:field="*{ativo}">
+            Ativo
+        </label>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/pessoas/tipos-leitor}">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>

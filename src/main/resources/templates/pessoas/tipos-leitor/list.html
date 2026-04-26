@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Tipos de leitor</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p><a th:href="@{/pessoas/tipos-leitor/novo}">Novo tipo</a></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Prazo</th>
+            <th>Limite</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tipo : ${tiposLeitor}">
+            <td th:text="${tipo.nome}"></td>
+            <td th:text="${tipo.prazoPadraoDias}"></td>
+            <td th:text="${tipo.limiteEmprestimos}"></td>
+            <td th:text="${tipo.ativo ? 'Ativo' : 'Inativo'}"></td>
+            <td><a th:href="@{/pessoas/tipos-leitor/{id}/editar(id=${tipo.id})}">Editar</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

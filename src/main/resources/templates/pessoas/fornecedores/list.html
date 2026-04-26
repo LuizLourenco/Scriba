@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Fornecedores</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p><a th:href="@{/pessoas/fornecedores/novo}">Novo fornecedor</a></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Documento</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fornecedor : ${fornecedores}">
+            <td th:text="${fornecedor.nome}"></td>
+            <td th:text="${fornecedor.tipo}"></td>
+            <td th:text="${fornecedor.cpfCnpj}"></td>
+            <td th:text="${fornecedor.ativo ? 'Ativo' : 'Inativo'}"></td>
+            <td><a th:href="@{/pessoas/fornecedores/{id}/editar(id=${fornecedor.id})}">Editar</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

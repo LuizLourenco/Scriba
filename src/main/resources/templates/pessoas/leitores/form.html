@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1 th:text="${leitorId == null ? 'Novo leitor' : 'Editar leitor'}"></h1>
+    <form method="post" th:action="${leitorId == null ? '/pessoas/leitores' : '/pessoas/leitores/' + leitorId}" th:object="${leitorForm}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+        </div>
+        <label for="nome">Nome</label>
+        <input id="nome" th:field="*{nome}">
+        <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+
+        <label for="cpf">CPF</label>
+        <input id="cpf" th:field="*{cpf}">
+        <p th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></p>
+
+        <label for="email">E-mail</label>
+        <input id="email" type="email" th:field="*{email}">
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+        <label for="telefone">Telefone</label>
+        <input id="telefone" th:field="*{telefone}">
+
+        <label for="tipoLeitorId">Tipo de leitor</label>
+        <select id="tipoLeitorId" th:field="*{tipoLeitorId}">
+            <option value="">Selecione</option>
+            <option th:each="tipo : ${tiposLeitor}" th:value="${tipo.id}" th:text="${tipo.nome}"></option>
+        </select>
+        <p th:if="${#fields.hasErrors('tipoLeitorId')}" th:errors="*{tipoLeitorId}"></p>
+
+        <label>
+            <input type="checkbox" th:field="*{ativo}">
+            Ativo
+        </label>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/pessoas/leitores}">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>
