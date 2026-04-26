@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scriba | Painel</title>
+    <script type="module">
+        import { install } from 'https://cdn.jsdelivr.net/npm/@twind/core@1/+esm';
+        import presetTailwind from 'https://cdn.jsdelivr.net/npm/@twind/preset-tailwind@1/+esm';
+        import presetAutoprefix from 'https://cdn.jsdelivr.net/npm/@twind/preset-autoprefix@1/+esm';
+
+        install({
+            presets: [presetAutoprefix(), presetTailwind()],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Sora"', 'ui-sans-serif', 'system-ui', 'sans-serif']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eefbf3',
+                            100: '#d6f5e0',
+                            300: '#89d9a7',
+                            500: '#2e9b5f',
+                            700: '#1f6a42',
+                            950: '#082112'
+                        },
+                        ink: '#0f1720'
+                    },
+                    boxShadow: {
+                        glow: '0 24px 80px rgba(8, 33, 18, 0.18)'
+                    }
+                }
+            }
+        });
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(137,217,167,0.24),_transparent_34%),linear-gradient(180deg,_#f6fbf8_0%,_#edf4ef_48%,_#e4ece6_100%)] font-sans text-slate-900">
+<main class="relative overflow-hidden">
+    <div class="absolute inset-x-0 top-0 -z-10 h-80 bg-[linear-gradient(135deg,_rgba(46,155,95,0.22),_rgba(255,255,255,0))]"></div>
+
+    <section class="mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-8 sm:px-10 lg:px-12">
+        <header class="flex flex-col gap-6 rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-glow backdrop-blur xl:flex-row xl:items-center xl:justify-between">
+            <div class="space-y-4">
+                <div class="inline-flex items-center gap-3 rounded-full bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 ring-1 ring-brand-100">
+                    <span class="h-2.5 w-2.5 rounded-full bg-brand-500"></span>
+                    Ambiente autenticado
+                </div>
+                <div class="space-y-2">
+                    <p class="text-sm font-medium uppercase tracking-[0.32em] text-slate-500">Scriba</p>
+                    <h1 class="max-w-3xl text-4xl font-extrabold leading-tight text-ink sm:text-5xl">
+                        Painel central para operar sua biblioteca com mais clareza.
+                    </h1>
+                </div>
+                <p class="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                    Uma camada inicial para concentrar identidade, acompanhamento e navegação do sistema.
+                </p>
+            </div>
+
+            <div class="w-full max-w-md rounded-[24px] bg-ink p-6 text-white shadow-2xl">
+                <p class="text-sm font-medium uppercase tracking-[0.28em] text-emerald-200/80">Sessao</p>
+                <div class="mt-4 flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-sm text-slate-300">Usuario autenticado</p>
+                        <p class="mt-2 break-all text-xl font-semibold" th:text="${usuario.email}">usuario@scriba.dev</p>
+                    </div>
+                    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-lg font-bold text-emerald-200"
+                         th:text="${#strings.toUpperCase(#strings.substring(usuario.email, 0, 1))}">
+                        U
+                    </div>
+                </div>
+                <div class="mt-6 grid grid-cols-2 gap-3 text-sm">
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                        <p class="text-slate-400">Status</p>
+                        <p class="mt-1 font-semibold text-emerald-200">Online</p>
+                    </div>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                        <p class="text-slate-400">Acesso</p>
+                        <p class="mt-1 font-semibold text-white">Liberado</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="mt-8 grid gap-5 md:grid-cols-3">
+            <article class="rounded-[24px] border border-white/70 bg-white/75 p-6 shadow-xl shadow-emerald-950/5 backdrop-blur">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
+                    <span class="text-xl font-bold">01</span>
+                </div>
+                <h2 class="mt-5 text-xl font-semibold text-ink">Panorama rapido</h2>
+                <p class="mt-3 text-sm leading-6 text-slate-600">
+                    Visual limpo para destacar o acesso atual e servir como base de um dashboard mais completo.
+                </p>
+            </article>
+
+            <article class="rounded-[24px] border border-slate-900/10 bg-slate-900 p-6 text-white shadow-xl shadow-slate-900/15">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-emerald-200">
+                    <span class="text-xl font-bold">02</span>
+                </div>
+                <h2 class="mt-5 text-xl font-semibold">Estrutura modular</h2>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                    O layout ja separa hero, bloco de sessao e cards para evoluir sem refazer a composicao.
+                </p>
+            </article>
+
+            <article class="rounded-[24px] border border-brand-100 bg-brand-50 p-6 shadow-xl shadow-brand-950/5">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 text-white">
+                    <span class="text-xl font-bold">03</span>
+                </div>
+                <h2 class="mt-5 text-xl font-semibold text-brand-950">Base com Twind</h2>
+                <p class="mt-3 text-sm leading-6 text-brand-950/80">
+                    Estilos utilitarios aplicados direto no template, sem depender de pipeline de build adicional.
+                </p>
+            </article>
+        </section>
+
+        <section class="mt-8 grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
+            <div class="rounded-[28px] border border-white/70 bg-white/75 p-7 shadow-xl shadow-slate-900/5 backdrop-blur">
+                <div class="flex items-center justify-between gap-4">
+                    <div>
+                        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-slate-500">Direcao visual</p>
+                        <h2 class="mt-2 text-2xl font-bold text-ink">Interface com mais presença</h2>
+                    </div>
+                    <div class="hidden h-14 w-14 rounded-2xl bg-[linear-gradient(135deg,_#2e9b5f,_#89d9a7)] lg:block"></div>
+                </div>
+
+                <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                        <p class="text-sm font-semibold text-slate-500">Leitura visual</p>
+                        <p class="mt-2 text-sm leading-6 text-slate-700">
+                            Contraste melhorado, hierarquia mais clara e espacamento consistente em toda a tela.
+                        </p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                        <p class="text-sm font-semibold text-slate-500">Responsividade</p>
+                        <p class="mt-2 text-sm leading-6 text-slate-700">
+                            A composicao se adapta bem do mobile ao desktop, sem depender de componentes externos.
+                        </p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                        <p class="text-sm font-semibold text-slate-500">Escalabilidade</p>
+                        <p class="mt-2 text-sm leading-6 text-slate-700">
+                            Os cards podem receber indicadores, atalhos e modulos reais quando o backend expor esses dados.
+                        </p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                        <p class="text-sm font-semibold text-slate-500">Identidade</p>
+                        <p class="mt-2 text-sm leading-6 text-slate-700">
+                            Fundo em camadas, tipografia mais forte e paleta verde para fugir do visual generico.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="rounded-[28px] border border-slate-900/10 bg-[linear-gradient(180deg,_#112019_0%,_#182b21_100%)] p-7 text-white shadow-xl shadow-slate-900/15">
+                <p class="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-200/80">Resumo</p>
+                <h2 class="mt-3 text-2xl font-bold">Home pronta para evoluir</h2>
+                <p class="mt-4 text-sm leading-6 text-slate-300">
+                    Hoje a pagina exibe o usuario autenticado em um layout melhor resolvido e preparado para futuras areas operacionais.
+                </p>
+                <div class="mt-6 space-y-3 text-sm">
+                    <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">Header com destaque de sessao</div>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">Cards informativos com hierarquia</div>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">Tema configurado com `Twind`</div>
+                </div>
+            </aside>
+        </section>
+    </section>
+</main>
+</body>
+</html>
