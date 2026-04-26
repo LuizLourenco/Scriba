@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Novo item do acervo</h1>
+    <form method="post" th:action="@{/acervo/itens}" th:object="${acervoItemForm}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+        </div>
+
+        <label for="tipoItem">Tipo</label>
+        <select id="tipoItem" th:field="*{tipoItem}">
+            <option th:each="tipo : ${tiposItem}" th:value="${tipo}" th:text="${tipo}"></option>
+        </select>
+
+        <label for="titulo">Título</label>
+        <input id="titulo" th:field="*{titulo}">
+        <p th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></p>
+
+        <label for="tombo">Tombo</label>
+        <input id="tombo" th:field="*{tombo}">
+        <p th:if="${#fields.hasErrors('tombo')}" th:errors="*{tombo}"></p>
+
+        <label for="codigoBarras">Código de barras</label>
+        <input id="codigoBarras" th:field="*{codigoBarras}">
+
+        <label for="localizacao">Localização</label>
+        <input id="localizacao" th:field="*{localizacao}">
+
+        <label for="dataAquisicao">Data de aquisição</label>
+        <input id="dataAquisicao" type="date" th:field="*{dataAquisicao}">
+
+        <label for="bibliotecaId">Biblioteca</label>
+        <select id="bibliotecaId" th:field="*{bibliotecaId}">
+            <option value="">Sem biblioteca</option>
+            <option th:each="biblioteca : ${bibliotecas}" th:value="${biblioteca.id}" th:text="${biblioteca.nome}"></option>
+        </select>
+
+        <h2>Livro</h2>
+        <label for="isbn">ISBN</label>
+        <input id="isbn" th:field="*{isbn}">
+        <label for="numeroPaginas">Páginas</label>
+        <input id="numeroPaginas" type="number" min="0" th:field="*{numeroPaginas}">
+        <label for="edicao">Edição</label>
+        <input id="edicao" th:field="*{edicao}">
+        <label for="volume">Volume</label>
+        <input id="volume" th:field="*{volume}">
+
+        <h2>Periódico</h2>
+        <label for="tipoPeriodico">Tipo de periódico</label>
+        <select id="tipoPeriodico" th:field="*{tipoPeriodico}">
+            <option th:each="tipo : ${tiposPeriodico}" th:value="${tipo}" th:text="${tipo}"></option>
+        </select>
+        <label for="issn">ISSN</label>
+        <input id="issn" th:field="*{issn}">
+        <label for="numero">Número</label>
+        <input id="numero" th:field="*{numero}">
+
+        <h2>Carta</h2>
+        <label for="remetente">Remetente</label>
+        <input id="remetente" th:field="*{remetente}">
+        <label for="destinatario">Destinatário</label>
+        <input id="destinatario" th:field="*{destinatario}">
+        <label for="dataEnvio">Data de envio</label>
+        <input id="dataEnvio" type="date" th:field="*{dataEnvio}">
+
+        <h2>Foto</h2>
+        <label for="assunto">Assunto</label>
+        <input id="assunto" th:field="*{assunto}">
+        <label for="fotografo">Fotógrafo</label>
+        <input id="fotografo" th:field="*{fotografo}">
+        <label for="formato">Formato</label>
+        <input id="formato" th:field="*{formato}">
+        <label for="resolucao">Resolução</label>
+        <input id="resolucao" th:field="*{resolucao}">
+
+        <h2>Mídia</h2>
+        <label for="tipoMidia">Tipo de mídia</label>
+        <select id="tipoMidia" th:field="*{tipoMidia}">
+            <option th:each="tipo : ${tiposMidia}" th:value="${tipo}" th:text="${tipo}"></option>
+        </select>
+        <label for="duracao">Duração</label>
+        <input id="duracao" th:field="*{duracao}">
+        <label for="produtora">Produtora</label>
+        <input id="produtora" th:field="*{produtora}">
+
+        <button type="submit">Salvar</button>
+        <a th:href="@{/acervo/itens}">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>

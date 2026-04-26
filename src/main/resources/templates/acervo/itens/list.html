@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Acervo</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <form method="get" th:action="@{/acervo/itens}">
+        <input name="busca" th:value="${busca}" placeholder="Buscar por título">
+        <button type="submit">Buscar</button>
+    </form>
+    <p><a th:href="@{/acervo/itens/novo}">Novo item</a></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Tombo</th>
+            <th>Status</th>
+            <th>Biblioteca</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${itens}">
+            <td th:text="${item.titulo}"></td>
+            <td th:text="${item.tipoItem}"></td>
+            <td th:text="${item.tombo}"></td>
+            <td th:text="${item.status}"></td>
+            <td th:text="${item.biblioteca != null ? item.biblioteca.nome : '-'}"></td>
+            <td>
+                <form method="post" th:action="@{/acervo/itens/{id}/status(id=${item.id})}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <select name="novoStatus">
+                        <option th:each="status : ${statusDisponiveis}" th:value="${status}" th:text="${status}"></option>
+                    </select>
+                    <button type="submit">Alterar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
