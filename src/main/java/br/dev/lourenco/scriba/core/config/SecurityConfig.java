@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .requestMatchers("/login", "/error").permitAll()
                 .requestMatchers("/actuator/**").hasRole("ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/curadoria/**").hasRole("ADMIN")
                 .requestMatchers("/catalogo/**").hasAnyRole("ADMIN", "BIBLIOTECARIO")
                 .requestMatchers("/acervo/**").hasAnyRole("ADMIN", "BIBLIOTECARIO")
                 .requestMatchers("/pessoas/**").hasAnyRole("ADMIN", "BIBLIOTECARIO")

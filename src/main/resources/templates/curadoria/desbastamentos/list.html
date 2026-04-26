@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h1>Curadoria</h1>
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+
+    <section>
+        <h2>Novo desbastamento</h2>
+        <form method="post" th:action="@{/curadoria/desbastamentos}" th:object="${desbastamentoForm}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+            <label for="acervoItemId">Item</label>
+            <select id="acervoItemId" th:field="*{acervoItemId}">
+                <option value="">Selecione</option>
+                <option th:each="item : ${itens}" th:value="${item.id}" th:text="${item.titulo + ' - ' + item.status}"></option>
+            </select>
+            <p th:if="${#fields.hasErrors('acervoItemId')}" th:errors="*{acervoItemId}"></p>
+
+            <label for="tipo">Tipo</label>
+            <select id="tipo" th:field="*{tipo}">
+                <option value="">Selecione</option>
+                <option value="DESCARTE">Descarte</option>
+                <option value="REMANEJAMENTO">Remanejamento</option>
+            </select>
+            <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></p>
+
+            <label for="destinoBibliotecaId">Biblioteca de destino</label>
+            <select id="destinoBibliotecaId" th:field="*{destinoBibliotecaId}">
+                <option value="">Selecione</option>
+                <option th:each="biblioteca : ${bibliotecas}" th:value="${biblioteca.id}" th:text="${biblioteca.nome}"></option>
+            </select>
+
+            <label for="justificativa">Justificativa</label>
+            <textarea id="justificativa" rows="4" th:field="*{justificativa}"></textarea>
+            <p th:if="${#fields.hasErrors('justificativa')}" th:errors="*{justificativa}"></p>
+
+            <button type="submit">Registrar</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Histórico</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Tipo</th>
+                <th>Justificativa</th>
+                <th>Usuário</th>
+                <th>Destino</th>
+                <th>Quando</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="desbastamento : ${desbastamentos}">
+                <td th:text="${desbastamento.acervoItem.titulo}"></td>
+                <td th:text="${desbastamento.tipo}"></td>
+                <td th:text="${desbastamento.justificativa}"></td>
+                <td th:text="${desbastamento.usuario.nome}"></td>
+                <td th:text="${desbastamento.destinoBiblioteca != null ? desbastamento.destinoBiblioteca.nome : '-'}"></td>
+                <td th:text="${desbastamento.criadoEm}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
