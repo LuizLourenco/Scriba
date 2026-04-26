@@ -7,6 +7,8 @@ spring:
     problemdetails:
       enabled: true
   thymeleaf:
+    prefix: classpath:/templates/app_beta/
+    suffix: .html
     cache: false
   mail:
     host: ${MAIL_HOST:localhost}
@@ -29,6 +31,9 @@ scriba:
     atrasos-cron: ${NOTIFICACOES_ATRASOS_CRON:0 0 8 * * *}
 
 management:
+  health:
+    mail:
+      enabled: false
   endpoints:
     web:
       exposure:

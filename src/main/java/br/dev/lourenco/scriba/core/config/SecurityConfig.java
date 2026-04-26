@@ -1,6 +1,7 @@
 package br.dev.lourenco.scriba.core.config;
 
 import br.dev.lourenco.scriba.core.security.UserDetailsServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -10,7 +11,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 @Configuration
 @EnableMethodSecurity
@@ -41,6 +44,10 @@ public class SecurityConfig {
                 .failureUrl("/login?error")
             )
             .logout(logout -> logout.logoutSuccessUrl("/login?logout"))
+            .exceptionHandling(exceptions -> exceptions.defaultAuthenticationEntryPointFor(
+                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                PathPatternRequestMatcher.pathPattern("/actuator/**")
+            ))
             .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
             .httpBasic(AbstractHttpConfigurer::disable)
             .rememberMe(AbstractHttpConfigurer::disable)

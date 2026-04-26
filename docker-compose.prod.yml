@@ -36,6 +36,26 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_SMTP_AUTH: ${MAIL_SMTP_AUTH}
+      MAIL_SMTP_STARTTLS: ${MAIL_SMTP_STARTTLS}
+      MAIL_FROM: ${MAIL_FROM}
+    networks:
+      - scriba-internal
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: scriba-nginx
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
       - scriba-internal
 

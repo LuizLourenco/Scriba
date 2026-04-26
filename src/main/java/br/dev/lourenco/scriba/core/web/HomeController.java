@@ -1,6 +1,7 @@
 package br.dev.lourenco.scriba.core.web;
 
 import br.dev.lourenco.scriba.modules.administracao.domain.Usuario;
+import br.dev.lourenco.scriba.modules.administracao.domain.Role;
 import br.dev.lourenco.scriba.core.security.annotation.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,9 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(@CurrentUser Usuario usuario, Model model) {
+        if (usuario.getRole() == Role.LEITOR) {
+            return "redirect:/portal";
+        }
         model.addAttribute("usuario", usuario);
         return "home";
     }

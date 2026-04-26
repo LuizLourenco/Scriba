@@ -62,7 +62,8 @@ class PortalLeitorSegurancaTest extends AbstractCoreIntegrationTest {
     @BeforeEach
     void prepararLeitor() {
         leitorUsuario = (UserDetailsImpl) userDetailsService.loadUserByUsername("leitor@scriba.dev");
-        garantirLeitor(leitorUsuario);
+        Leitor leitor = garantirLeitor(leitorUsuario);
+        cancelarReservasAguardando(leitor);
         when(notificacaoService.notificarReservaConfirmada(any(Reserva.class))).thenReturn(true);
     }
 
@@ -134,6 +135,15 @@ class PortalLeitorSegurancaTest extends AbstractCoreIntegrationTest {
                 leitor.setEmail(usuario.getUsername());
                 leitor.setAtivo(true);
                 return leitorRepository.save(leitor);
+            });
+    }
+
+    private void cancelarReservasAguardando(Leitor leitor) {
+        reservaRepository.findAllByLeitorIdAndInstituicaoIdOrderByDataReservaDesc(leitor.getId(), leitor.getInstituicaoId()).stream()
+            .filter(reserva -> reserva.getStatus() == StatusReserva.AGUARDANDO)
+            .forEach(reserva -> {
+                reserva.setStatus(StatusReserva.CANCELADA);
+                reservaRepository.save(reserva);
             });
     }
 }

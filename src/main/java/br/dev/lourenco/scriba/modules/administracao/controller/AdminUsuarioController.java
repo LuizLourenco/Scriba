@@ -2,6 +2,7 @@ package br.dev.lourenco.scriba.modules.administracao.controller;
 
 import java.util.UUID;
 
+import jakarta.servlet.http.HttpServletRequest;
 import br.dev.lourenco.scriba.core.exception.BusinessException;
 import br.dev.lourenco.scriba.modules.administracao.domain.Role;
 import br.dev.lourenco.scriba.modules.administracao.domain.Usuario;
@@ -108,20 +109,29 @@ public class AdminUsuarioController {
 
     @PatchMapping("/{id}/desativar")
     public String desativarPatch(@PathVariable UUID id, Model model) {
-        return alterarAtivo(id, false, model);
+        return alterarAtivoFragmento(id, false, model);
     }
 
     @PostMapping("/{id}/desativar")
-    public String desativarPost(@PathVariable UUID id, Model model) {
-        return alterarAtivo(id, false, model);
+    public String desativarPost(@PathVariable UUID id, Model model, HttpServletRequest request) {
+        return alterarAtivoPost(id, false, model, request);
     }
 
     @PostMapping("/{id}/ativar")
-    public String ativar(@PathVariable UUID id, Model model) {
-        return alterarAtivo(id, true, model);
+    public String ativar(@PathVariable UUID id, Model model, HttpServletRequest request) {
+        return alterarAtivoPost(id, true, model, request);
     }
 
-    private String alterarAtivo(UUID id, boolean ativo, Model model) {
+    private String alterarAtivoPost(UUID id, boolean ativo, Model model, HttpServletRequest request) {
+        usuarioService.alterarAtivo(id, ativo);
+        if (!isHtmx(request)) {
+            return "redirect:/admin/usuarios";
+        }
+        model.addAttribute("usuarios", usuarioService.listarUsuariosDaInstituicaoAtual());
+        return "admin/usuarios/list :: tabela";
+    }
+
+    private String alterarAtivoFragmento(UUID id, boolean ativo, Model model) {
         usuarioService.alterarAtivo(id, ativo);
         model.addAttribute("usuarios", usuarioService.listarUsuariosDaInstituicaoAtual());
         return "admin/usuarios/list :: tabela";
@@ -131,5 +141,9 @@ public class AdminUsuarioController {
         model.addAttribute("usuarioForm", form);
         model.addAttribute("roles", Role.values());
         model.addAttribute("bibliotecas", bibliotecaService.listarDaInstituicaoAtual());
+    }
+
+    private boolean isHtmx(HttpServletRequest request) {
+        return "true".equalsIgnoreCase(request.getHeader("HX-Request"));
     }
 }

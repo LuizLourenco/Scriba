@@ -41,13 +41,13 @@ public class AcervoItemController {
         model.addAttribute("busca", busca);
         model.addAttribute("statusDisponiveis", StatusAcervo.values());
         model.addAttribute("mudarStatusForm", new MudarStatusForm());
-        return "acervo/itens/list";
+        return "itens/list";
     }
 
     @GetMapping("/novo")
     public String novo(Model model) {
         prepararFormulario(model, new AcervoItemForm());
-        return "acervo/itens/form";
+        return "itens/form";
     }
 
     @PostMapping
@@ -59,14 +59,14 @@ public class AcervoItemController {
     ) {
         if (binding.hasErrors()) {
             prepararFormulario(model, acervoItemForm);
-            return "acervo/itens/form";
+            return "itens/form";
         }
         try {
             acervoService.criar(acervoItemForm);
         } catch (BusinessException exception) {
             binding.reject("acervo", exception.getMessage());
             prepararFormulario(model, acervoItemForm);
-            return "acervo/itens/form";
+            return "itens/form";
         }
         redirectAttributes.addFlashAttribute("sucesso", "Item do acervo criado com sucesso.");
         return "redirect:/acervo/itens";

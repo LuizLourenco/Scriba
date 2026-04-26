@@ -1,9 +1,36 @@
 scriba:
   tenant:
-    strict-mode: false
+    strict-mode: true
 
 spring:
+  datasource:
+    url: jdbc:mariadb://${DB_HOST:db-prod}:${DB_PORT:3306}/${DB_NAME:scriba_prod}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+  flyway:
+    enabled: true
+    clean-disabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: false
   thymeleaf:
     prefix: classpath:/templates/app_beta/
     suffix: .html
-    cache: false # Opcional: útil para ver mudanças sem reiniciar o app em dev
+    cache: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when_authorized
+
+logging:
+  structured:
+    format:
+      console: ecs

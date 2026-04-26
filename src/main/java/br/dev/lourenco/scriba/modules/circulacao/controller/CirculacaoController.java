@@ -39,7 +39,7 @@ public class CirculacaoController {
     @GetMapping("/emprestimos")
     public String emprestimos(Model model) {
         popularModelo(model);
-        return "circulacao/emprestimos/list";
+        return "emprestimos/list";
     }
 
     @PostMapping("/emprestimos")
@@ -51,7 +51,7 @@ public class CirculacaoController {
     ) {
         if (binding.hasErrors()) {
             popularModelo(model);
-            return "circulacao/emprestimos/list";
+            return "emprestimos/list";
         }
 
         circulacaoService.realizarEmprestimo(form.getAcervoItemId(), form.getLeitorId());
@@ -68,7 +68,7 @@ public class CirculacaoController {
     ) {
         if (binding.hasErrors()) {
             popularModelo(model);
-            return "circulacao/emprestimos/list";
+            return "emprestimos/list";
         }
 
         circulacaoService.reservar(form.getAcervoItemId(), form.getLeitorId());

@@ -1,5 +1,11 @@
 HELP.md
 target/
+.codex
+.env
+cookies.txt
+cookies_*.txt
+*.log
+backups/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

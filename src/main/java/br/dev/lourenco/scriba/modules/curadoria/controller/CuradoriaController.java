@@ -35,7 +35,7 @@ public class CuradoriaController {
     @GetMapping
     public String listar(Model model) {
         popularModelo(model);
-        return "curadoria/desbastamentos/list";
+        return "desbastamentos/list";
     }
 
     @PostMapping
@@ -47,7 +47,7 @@ public class CuradoriaController {
     ) {
         if (binding.hasErrors()) {
             popularModelo(model);
-            return "curadoria/desbastamentos/list";
+            return "desbastamentos/list";
         }
 
         curadoriaService.registrar(form);

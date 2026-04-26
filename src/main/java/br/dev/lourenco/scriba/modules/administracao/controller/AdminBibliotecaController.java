@@ -2,6 +2,7 @@ package br.dev.lourenco.scriba.modules.administracao.controller;
 
 import java.util.UUID;
 
+import jakarta.servlet.http.HttpServletRequest;
 import br.dev.lourenco.scriba.core.exception.BusinessException;
 import br.dev.lourenco.scriba.modules.administracao.domain.Biblioteca;
 import br.dev.lourenco.scriba.modules.administracao.dto.BibliotecaForm;
@@ -96,22 +97,35 @@ public class AdminBibliotecaController {
 
     @PatchMapping("/{id}/desativar")
     public String desativarPatch(@PathVariable UUID id, Model model) {
-        return alterarAtivo(id, false, model);
+        return alterarAtivoFragmento(id, false, model);
     }
 
     @PostMapping("/{id}/desativar")
-    public String desativarPost(@PathVariable UUID id, Model model) {
-        return alterarAtivo(id, false, model);
+    public String desativarPost(@PathVariable UUID id, Model model, HttpServletRequest request) {
+        return alterarAtivoPost(id, false, model, request);
     }
 
     @PostMapping("/{id}/ativar")
-    public String ativar(@PathVariable UUID id, Model model) {
-        return alterarAtivo(id, true, model);
+    public String ativar(@PathVariable UUID id, Model model, HttpServletRequest request) {
+        return alterarAtivoPost(id, true, model, request);
     }
 
-    private String alterarAtivo(UUID id, boolean ativo, Model model) {
+    private String alterarAtivoPost(UUID id, boolean ativo, Model model, HttpServletRequest request) {
+        bibliotecaService.alterarAtivo(id, ativo);
+        if (!isHtmx(request)) {
+            return "redirect:/admin/bibliotecas";
+        }
+        model.addAttribute("bibliotecas", bibliotecaService.listarDaInstituicaoAtual());
+        return "admin/bibliotecas/list :: tabela";
+    }
+
+    private String alterarAtivoFragmento(UUID id, boolean ativo, Model model) {
         bibliotecaService.alterarAtivo(id, ativo);
         model.addAttribute("bibliotecas", bibliotecaService.listarDaInstituicaoAtual());
         return "admin/bibliotecas/list :: tabela";
+    }
+
+    private boolean isHtmx(HttpServletRequest request) {
+        return "true".equalsIgnoreCase(request.getHeader("HX-Request"));
     }
 }

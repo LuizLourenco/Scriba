@@ -40,4 +40,18 @@ class RbacIntegrationTest extends AbstractCoreIntegrationTest {
                 .with(user(userDetailsService.loadUserByUsername("bibliotecario@scriba.dev"))))
             .andExpect(status().isForbidden());
     }
+
+    @Test
+    void actuatorExigeAdminSemRedirecionarParaLogin() throws Exception {
+        mvc.perform(get("/actuator/health"))
+            .andExpect(status().isUnauthorized());
+
+        mvc.perform(get("/actuator/health")
+                .with(user(userDetailsService.loadUserByUsername("bibliotecario@scriba.dev"))))
+            .andExpect(status().isForbidden());
+
+        mvc.perform(get("/actuator/health")
+                .with(user(userDetailsService.loadUserByUsername("admin@scriba.dev"))))
+            .andExpect(status().isOk());
+    }
 }
