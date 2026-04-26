@@ -1,3 +1,9 @@
 scriba:
   tenant:
     strict-mode: false
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/app_beta/
+    suffix: .html
+    cache: false # Opcional: útil para ver mudanças sem reiniciar o app em dev
