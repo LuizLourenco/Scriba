@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app(${autorId == null ? 'Novo autor' : 'Editar autor'}, ~{::main})}">
 <main>
     <h1 th:text="${autorId == null ? 'Novo autor' : 'Editar autor'}"></h1>
     <form method="post" th:action="${autorId == null ? '/catalogo/autores' : '/catalogo/autores/' + autorId}" th:object="${autorForm}">
@@ -26,5 +26,4 @@
         <a th:href="@{/catalogo/autores}">Cancelar</a>
     </form>
 </main>
-</body>
 </html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app('Leitores', ~{::main})}">
 <main>
     <h1>Leitores</h1>
-    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p class="message-success" th:if="${sucesso}" th:text="${sucesso}"></p>
     <p><a th:href="@{/pessoas/leitores/novo}">Novo leitor</a></p>
     <table>
         <thead>
@@ -28,5 +28,4 @@
         </tbody>
     </table>
 </main>
-</body>
 </html>

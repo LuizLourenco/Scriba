@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app(${leitorId == null ? 'Novo leitor' : 'Editar leitor'}, ~{::main})}">
 <main>
     <h1 th:text="${leitorId == null ? 'Novo leitor' : 'Editar leitor'}"></h1>
     <form method="post" th:action="${leitorId == null ? '/pessoas/leitores' : '/pessoas/leitores/' + leitorId}" th:object="${leitorForm}">
@@ -38,5 +38,4 @@
         <a th:href="@{/pessoas/leitores}">Cancelar</a>
     </form>
 </main>
-</body>
 </html>

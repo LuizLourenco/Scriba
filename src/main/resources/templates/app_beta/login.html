@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app('Acesso', ~{::main})}">
 <main>
     <h1>Scriba</h1>
-    <p th:if="${error}">Credenciais inválidas.</p>
+    <p class="message-error" th:if="${error}">Credenciais inválidas.</p>
     <form method="post" th:action="@{/login}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <label for="email">E-mail</label>
@@ -13,5 +13,4 @@
         <button type="submit">Entrar</button>
     </form>
 </main>
-</body>
 </html>

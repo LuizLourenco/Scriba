@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="app(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' | Scriba'">Scriba</title>
+    <style>
+        :root {
+            --bg: #f3f6f0;
+            --panel: rgba(255, 255, 255, 0.86);
+            --panel-strong: #ffffff;
+            --line: rgba(20, 51, 30, 0.12);
+            --text: #17301f;
+            --muted: #5c6f63;
+            --brand: #2e7d4d;
+            --brand-dark: #1f5a38;
+            --brand-soft: #e4f3e9;
+            --danger-soft: #fde8e8;
+            --danger-text: #a33f3f;
+            --shadow: 0 24px 50px rgba(18, 45, 28, 0.10);
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(126, 189, 148, 0.28), transparent 30%),
+                linear-gradient(180deg, #f8fbf7 0%, var(--bg) 42%, #e9eee7 100%);
+        }
+
+        a {
+            color: var(--brand-dark);
+        }
+
+        .shell {
+            width: min(1240px, calc(100% - 2rem));
+            margin: 0 auto;
+            padding: 1.25rem 0 2rem;
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 1.25rem;
+        }
+
+        .sidebar,
+        .workspace {
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 1rem;
+            align-self: start;
+            background: linear-gradient(180deg, rgba(21, 42, 29, 0.96), rgba(29, 59, 40, 0.94));
+            color: #f5fbf6;
+            padding: 1.5rem;
+        }
+
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+
+        .brand-title {
+            margin: 1rem 0 0.35rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+        .brand-copy,
+        .user-copy,
+        .nav-group p {
+            margin: 0;
+            color: rgba(235, 246, 239, 0.74);
+            line-height: 1.5;
+        }
+
+        .user-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .user-box strong {
+            display: block;
+            margin-top: 0.35rem;
+            word-break: break-word;
+        }
+
+        .nav-group {
+            margin-top: 1.5rem;
+        }
+
+        .nav-group h2 {
+            margin: 0 0 0.6rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(235, 246, 239, 0.58);
+        }
+
+        .nav-group nav {
+            display: grid;
+            gap: 0.45rem;
+        }
+
+        .nav-link,
+        .logout-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            border-radius: 14px;
+            border: 1px solid transparent;
+            color: #f5fbf6;
+            background: transparent;
+            text-decoration: none;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .logout-button:hover {
+            border-color: rgba(255, 255, 255, 0.10);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .workspace {
+            background: var(--panel);
+            padding: 1.5rem;
+        }
+
+        .workspace-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .workspace-header h1 {
+            margin: 0;
+            font-size: 1.7rem;
+        }
+
+        .workspace-header p {
+            margin: 0.35rem 0 0;
+            color: var(--muted);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 0.8rem;
+            border-radius: 999px;
+            border: 1px solid rgba(46, 125, 77, 0.18);
+            background: var(--brand-soft);
+            color: var(--brand-dark);
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .status-pill::before {
+            content: "";
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 999px;
+            background: var(--brand);
+        }
+
+        .content {
+            padding-top: 1.25rem;
+        }
+
+        .content main > :first-child {
+            margin-top: 0;
+        }
+
+        .content h1 {
+            margin: 0 0 0.9rem;
+            font-size: 2rem;
+            line-height: 1.15;
+        }
+
+        .content h2 {
+            margin: 0 0 0.85rem;
+            font-size: 1.1rem;
+        }
+
+        .content p,
+        .content li {
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .content main > p[th\\:if],
+        .content section > p {
+            margin: 0 0 1rem;
+        }
+
+        .content main > form,
+        .content section,
+        .content main > table,
+        .content main > div {
+            margin-top: 1rem;
+        }
+
+        .content section,
+        .content main > form,
+        .content main > table,
+        .content main > div:has(> p[th\\:each]),
+        .content main > p:has(> a) {
+            padding: 1rem 1.1rem;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: var(--panel-strong);
+        }
+
+        .content main > p:has(> a) {
+            display: inline-block;
+        }
+
+        .content label {
+            display: block;
+            margin: 0 0 0.35rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .content input,
+        .content select,
+        .content textarea,
+        .content button {
+            font: inherit;
+        }
+
+        .content input:not([type="checkbox"]):not([type="radio"]),
+        .content select,
+        .content textarea {
+            width: 100%;
+            padding: 0.8rem 0.9rem;
+            border: 1px solid rgba(23, 48, 31, 0.16);
+            border-radius: 12px;
+            background: #fcfdfc;
+            color: var(--text);
+        }
+
+        .content textarea {
+            min-height: 8rem;
+            resize: vertical;
+        }
+
+        .content button,
+        .content p > a,
+        .content td > a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            min-height: 2.6rem;
+            padding: 0.7rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            background: var(--brand);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .content td > a {
+            min-height: 2.3rem;
+            padding: 0.5rem 0.85rem;
+        }
+
+        .content button:hover,
+        .content p > a:hover,
+        .content td > a:hover {
+            background: var(--brand-dark);
+        }
+
+        .content table form,
+        .content td form {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.2rem 0.2rem 0.2rem 0;
+        }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+
+        .content th,
+        .content td {
+            padding: 0.85rem 0.75rem;
+            border-bottom: 1px solid rgba(23, 48, 31, 0.08);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .content th {
+            color: var(--muted);
+            font-size: 0.84rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .content td p {
+            margin: 0;
+        }
+
+        .content [th\\:errors],
+        .content .error-text {
+            margin: 0.35rem 0 0;
+            color: var(--danger-text);
+            font-size: 0.92rem;
+        }
+
+        .content .message-error,
+        .content .message-success {
+            padding: 0.9rem 1rem;
+            border-radius: 14px;
+            border: 1px solid transparent;
+        }
+
+        .content .message-success {
+            background: var(--brand-soft);
+            border-color: rgba(46, 125, 77, 0.18);
+            color: var(--brand-dark);
+        }
+
+        .content .message-error {
+            background: var(--danger-soft);
+            border-color: rgba(163, 63, 63, 0.16);
+            color: var(--danger-text);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .dashboard-card {
+            padding: 1.1rem;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: var(--panel-strong);
+        }
+
+        .dashboard-card p {
+            margin: 0.35rem 0 0;
+        }
+
+        @media (max-width: 960px) {
+            .shell {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .shell {
+                width: min(100% - 1rem, 1240px);
+                padding-top: 0.5rem;
+            }
+
+            .workspace,
+            .sidebar {
+                padding: 1rem;
+                border-radius: 20px;
+            }
+
+            .workspace-header h1,
+            .content h1 {
+                font-size: 1.45rem;
+            }
+
+            .content th,
+            .content td {
+                padding-inline: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand-mark">S</div>
+        <p class="brand-title">Scriba</p>
+        <p class="brand-copy">Layout base para centralizar navegação, identidade e estrutura comum das telas Thymeleaf.</p>
+
+        <div class="user-box" sec:authorize="isAuthenticated()">
+            <p class="user-copy">Sessão autenticada</p>
+            <strong th:text="${#authentication.name}">usuario@scriba.dev</strong>
+        </div>
+
+        <div class="user-box" sec:authorize="isAnonymous()">
+            <p class="user-copy">Acesso ao sistema</p>
+            <strong>Entre com suas credenciais</strong>
+        </div>
+
+        <div class="nav-group" sec:authorize="isAuthenticated()">
+            <h2>Geral</h2>
+            <nav>
+                <a class="nav-link" sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')" th:href="@{/}">Painel</a>
+                <a class="nav-link" sec:authorize="hasRole('LEITOR')" th:href="@{/portal}">Portal do leitor</a>
+            </nav>
+        </div>
+
+        <div class="nav-group" sec:authorize="hasAnyRole('ADMIN','BIBLIOTECARIO')">
+            <h2>Operação</h2>
+            <nav>
+                <a class="nav-link" th:href="@{/catalogo/autores}">Catálogo</a>
+                <a class="nav-link" th:href="@{/acervo/itens}">Acervo</a>
+                <a class="nav-link" th:href="@{/pessoas/leitores}">Pessoas</a>
+                <a class="nav-link" th:href="@{/circulacao/emprestimos}">Circulação</a>
+            </nav>
+        </div>
+
+        <div class="nav-group" sec:authorize="hasRole('ADMIN')">
+            <h2>Administração</h2>
+            <nav>
+                <a class="nav-link" th:href="@{/admin/bibliotecas}">Bibliotecas</a>
+                <a class="nav-link" th:href="@{/admin/usuarios}">Usuários</a>
+                <a class="nav-link" th:href="@{/admin/regras-emprestimo}">Regras</a>
+                <a class="nav-link" th:href="@{/admin/relatorios/emprestimos-em-aberto}">Relatórios</a>
+                <a class="nav-link" th:href="@{/curadoria/desbastamentos}">Curadoria</a>
+            </nav>
+        </div>
+
+        <div class="nav-group" sec:authorize="hasRole('LEITOR')">
+            <h2>Consulta</h2>
+            <nav>
+                <a class="nav-link" th:href="@{/portal/acervo}">Acervo</a>
+            </nav>
+        </div>
+
+        <div class="nav-group" sec:authorize="isAuthenticated()">
+            <h2>Sessão</h2>
+            <form method="post" th:action="@{/logout}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button class="logout-button" type="submit">Sair</button>
+            </form>
+        </div>
+    </aside>
+
+    <section class="workspace">
+        <header class="workspace-header">
+            <div>
+                <h1 th:text="${title}">Scriba</h1>
+                <p>Estrutura compartilhada para páginas Thymeleaf do projeto.</p>
+            </div>
+            <div class="status-pill" sec:authorize="isAuthenticated()">Ambiente protegido</div>
+        </header>
+
+        <div class="content" th:insert="${content}">
+            <main></main>
+        </div>
+    </section>
+</div>
+</body>
+</html>

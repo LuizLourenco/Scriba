@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app('Bibliotecas', ~{::main})}">
 <main>
     <h1>Bibliotecas</h1>
-    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p class="message-success" th:if="${sucesso}" th:text="${sucesso}"></p>
     <p><a th:href="@{/admin/bibliotecas/nova}">Nova biblioteca</a></p>
     <table th:fragment="tabela">
         <thead>
@@ -34,5 +34,4 @@
         </tbody>
     </table>
 </main>
-</body>
 </html>

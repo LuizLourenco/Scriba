@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app(${categoriaId == null ? 'Nova categoria' : 'Editar categoria'}, ~{::main})}">
 <main>
     <h1 th:text="${categoriaId == null ? 'Nova categoria' : 'Editar categoria'}"></h1>
     <form method="post" th:action="${categoriaId == null ? '/catalogo/categorias' : '/catalogo/categorias/' + categoriaId}" th:object="${categoriaForm}">
@@ -31,5 +31,4 @@
         <a th:href="@{/catalogo/categorias}">Cancelar</a>
     </form>
 </main>
-</body>
 </html>

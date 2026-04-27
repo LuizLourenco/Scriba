@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app('Relatório de empréstimos em aberto', ~{::main})}">
 <main>
     <h1>Emprestimos em aberto</h1>
-    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p class="message-success" th:if="${sucesso}" th:text="${sucesso}"></p>
 
     <form method="get" th:action="@{/admin/relatorios/emprestimos-em-aberto}">
         <label for="de">De</label>
@@ -39,5 +39,4 @@
         </tbody>
     </table>
 </main>
-</body>
 </html>

@@ -1,0 +1,12 @@
+.git
+.idea
+.vscode
+.env
+.env.*
+!.env.example
+!.env.prod.example
+.codex
+cookies*.txt
+target
+backups
+*.log

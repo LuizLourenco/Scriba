@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app('Editoras', ~{::main})}">
 <main>
     <h1>Editoras</h1>
-    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p class="message-success" th:if="${sucesso}" th:text="${sucesso}"></p>
     <form method="get" th:action="@{/catalogo/editoras}">
         <input name="busca" th:value="${busca}" placeholder="Buscar por nome">
         <button type="submit">Buscar</button>
@@ -30,5 +30,4 @@
         </tbody>
     </table>
 </main>
-</body>
 </html>

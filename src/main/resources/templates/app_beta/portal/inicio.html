@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: app('Portal do leitor', ~{::main})}">
 <main>
     <h1>Portal do leitor</h1>
-    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p class="message-success" th:if="${sucesso}" th:text="${sucesso}"></p>
     <p th:text="${leitor.nome}"></p>
     <p><a th:href="@{/portal/acervo}">Consultar acervo</a></p>
 
@@ -67,5 +67,4 @@
         </table>
     </section>
 </main>
-</body>
 </html>
